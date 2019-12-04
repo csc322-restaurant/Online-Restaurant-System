@@ -7,7 +7,12 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
     password = db.Column(db.String(100))
-    expert = db.Column(db.Boolean)
+    creditCardNumber = db.Column(db.Integer)
+    address = db.Column(db.String(100))
+    role = db.Column(db.String(50))
+    requestedRole = db.Column(db.String(50))
+    restaurant = db.Column(db.String(100))
+    rating = db.Column(db.Integer)
     admin = db.Column(db.Boolean)
 
     questions_asked = db.relationship(

@@ -34,7 +34,7 @@ def ask():
 
         return redirect(url_for('main.index'))
 
-    experts = User.query.filter_by(expert=True).all()
+    experts = User.query.filter_by(role='manager').all()
 
     context = {
         'experts' : experts
@@ -45,7 +45,7 @@ def ask():
 @main.route('/answer/<int:question_id>', methods=['GET', 'POST'])
 @login_required
 def answer(question_id):
-    if not current_user.expert:
+    if not (current_user.role == 'manager'):
         return redirect(url_for('main.index'))
 
     question = Question.query.get_or_404(question_id)
@@ -75,7 +75,7 @@ def question(question_id):
 @main.route('/unanswered')
 @login_required
 def unanswered():
-    if not current_user.expert:
+    if not (current_user.role == 'manager'):
         return redirect(url_for('main.index'))
 
     unanswered_questions = Question.query\
@@ -111,7 +111,7 @@ def promote(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    user.expert = True
+    user.role = 'manager'
     db.session.commit()
 
     return redirect(url_for('main.users'))

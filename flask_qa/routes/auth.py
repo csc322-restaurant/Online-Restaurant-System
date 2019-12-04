@@ -12,12 +12,22 @@ def register():
     if request.method == 'POST':
         name = request.form['name']
         unhashed_password = request.form['password']
+        creditCardNumber = request.form['creditCardNumber']
+        address = request.form['address']
+        requestedRole = request.form['role']
+        restaurant = request.form['restaurant']
+        
 
         user = User(
             name=name, 
             unhashed_password=unhashed_password,
+            creditCardNumber=creditCardNumber,
+            address=address,
+            role='visitor',
+            requestedRole=requestedRole,
+            restaurant=restaurant,
             admin=False,  
-            expert=False
+            rating = 0
         )
 
         db.session.add(user)
