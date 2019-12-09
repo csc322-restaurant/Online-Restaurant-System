@@ -13,21 +13,25 @@ def register():
         name = request.form['name']
         unhashed_password = request.form['password']
         creditCardNumber = request.form['creditCardNumber']
-        address = request.form['address']
+        latitude = request.form['latitude']
+        longitude = request.form['longitude']
         requestedRole = request.form['role']
         restaurant = request.form['restaurant']
-        
+        admin = (request.form['admin'] == 'True')
+        role = 'visitor'
+        if(admin == True):
+            role = requestedRole
 
         user = User(
             name=name, 
             unhashed_password=unhashed_password,
             creditCardNumber=creditCardNumber,
-            address=address,
-            role='visitor',
+            latitude=latitude,
+            longitude=longitude,
+            role=role,
             requestedRole=requestedRole,
             restaurant=restaurant,
-            admin=False,  
-            rating = 0
+            admin=admin,
         )
 
         db.session.add(user)

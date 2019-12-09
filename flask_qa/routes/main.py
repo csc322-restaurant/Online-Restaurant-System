@@ -92,10 +92,10 @@ def unanswered():
 @main.route('/users')
 @login_required
 def users():
-    if not current_user.admin:
+    if (current_user.role != 'Manager'):
         return redirect(url_for('main.index'))
 
-    users = User.query.filter_by(admin=False).all()
+    users = User.query.filter_by().all()
 
     context = {
         'users' : users
@@ -111,7 +111,7 @@ def promote(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    user.role = 'manager'
+    user.role = user.requestedRole
     db.session.commit()
 
     return redirect(url_for('main.users'))

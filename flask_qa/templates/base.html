@@ -32,10 +32,10 @@
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('main.ask') }}">Ask Question</a></li>
             {% endif %}
-            {% if current_user.is_authenticated and (current_user.role == 'manager') %}
+            {% if current_user.is_authenticated and (current_user.role == 'Manager') %}
             <li><a href="{{ url_for('main.unanswered') }}">Unanswered Questions</a></li>
             {% endif %}
-            {% if current_user.is_authenticated and current_user.admin %}
+            {% if current_user.is_authenticated and (current_user.role == 'Manager') %}
             <li><a href="{{ url_for('main.users') }}">User Setup</a></li>
             {% endif %}
             {% if current_user.is_authenticated %}
@@ -47,7 +47,7 @@
     </nav>
 
     <div class="container theme-showcase" role="main">
-
+      {{ current_user.role }}
       {% block content %}{% endblock %}
 
     </div> <!-- /container -->

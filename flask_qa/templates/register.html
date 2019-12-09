@@ -29,20 +29,26 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label for="inputAddress" class="col-lg-2 control-label">Address</label>
+                    <label for="inputlatitude" class="col-lg-2 control-label">latitude</label>
                     <div class="col-lg-10">
-                      <input type="text" class="form-control" name="address" id="inputAddress" placeholder="Address">
+                      <input type="number" step="any" class="form-control" name="latitude" id="inputlatitude" placeholder="latitude">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputlongitude" class="col-lg-2 control-label">longitude</label>
+                    <div class="col-lg-10">
+                      <input type="number" step="any" class="form-control" name="longitude" id="inputlongitude" placeholder="longitude">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inputRole" class="col-lg-2 control-label" font=black>Registering for role</label>
-                    <select name="role" color=black>
-                      <option value="Visitor">Visitor</option>
-                      <option value="Registered">Registered</option>
-                      <option value="Deliverer">Deliverer</option>
-                      <option value="Chef">Chef</option>
-                      <option value="Salesmanager">Salesmanager</option>
-                      <option value="Manager">Manager</option>
+                    <select name="role" font=black>
+                      <option value="Visitor" font=black>Visitor</option>
+                      <option value="Registered" font=black>Registered</option>
+                      <option value="Deliverer" font=black>Deliverer</option>
+                      <option value="Chef" font=black>Chef</option>
+                      <option value="Salesmanager" font=black>Salesmanager</option>
+                      <option value="Manager" font=black>Manager</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -55,6 +61,13 @@
                     <div class="col-lg-10 col-lg-offset-2">
                       <button type="submit" class="btn btn-primary">Register</button>
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputRole" class="col-lg-2 control-label" font=black>Registering for role</label>
+                    <select name="admin" font=black>
+                      <option value="False" font=black>False</option>
+                      <option value="True" font=black>True</option>
+                    </select>
                   </div>
                 </fieldset>
               </form>
