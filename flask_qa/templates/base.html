@@ -38,6 +38,15 @@
             {% if current_user.is_authenticated and (current_user.role == 'Manager') %}
             <li><a href="{{ url_for('main.users') }}">User Setup</a></li>
             {% endif %}
+            {% if current_user.is_authenticated and (current_user.role == 'Manager') %}
+            <li><a href="{{ url_for('main.employee') }}">Employees</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and (current_user.role == 'Manager') %}
+            <li><a href="{{ url_for('main.salesorder') }}">Accept Sales order</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and (current_user.role == 'Salesmanager') %}
+            <li><a href="{{ url_for('main.managesalesorder') }}">Add to sales order</a></li>
+            {% endif %}
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
             {% endif %}

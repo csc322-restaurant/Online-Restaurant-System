@@ -3,7 +3,11 @@ from flask_login import login_user, logout_user
 from werkzeug.security import check_password_hash
 
 from flask_qa.extensions import db
-from flask_qa.models import User
+from flask_qa.models import Restaurant, User,\
+    Rating, Salary, Warnings, Question, \
+    Ingredient, Supplier, Ingredientsupplier, \
+    Supplyorder, Ingredientorder, Food, Recipe, \
+    Menu, Dish, Order, Orderfood
 
 auth = Blueprint('auth', __name__)
 

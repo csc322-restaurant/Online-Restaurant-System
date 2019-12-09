@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}salesorder{% endblock %}
+
+{% block content %}
+<div class="page-header">
+        <h1>Manage Sales orders</h1>
+        <h6>Click to accept salesorder</h6>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="list-group">
+                <form class="form-horizontal" method="POST" action="{{ url_for('main.createsalesorder') }}">
+                    <fieldset>
+                        <div class="form-group">
+                            <h4 class="list-group-item-heading" >click submit to create new sales order</h4>
+                            <input type="text" class="form-control" name="salesordertext" id="inputsalesorder" placeholder="salesorder description">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+            {% for order in salesorder %}
+              <a href="{{ url_for('main.acceptorder', supply_order_id=order.supply_order_id) }}" class="list-group-item {% if order.approval %}active{% endif %}">
+                <h4 class="list-group-item-heading">{{ order.supply_order_name }} with approval {{ order.approval }}  has order date {{order.order_date }}</h4>
+              </a>
+            {% endfor %}
+          </div>
+        </div><!-- /.col-lg-12 -->
+      </div>
+{% endblock %}

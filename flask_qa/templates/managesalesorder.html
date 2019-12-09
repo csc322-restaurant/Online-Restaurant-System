@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}manage sales order{% endblock %}
+
+{% block content %}
+<div class="page-header">
+        <h1>Manage Sales orders</h1>
+        <h6>Click to accept salesorder</h6>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="list-group">
+            {% for order in incompletesalesorder %}
+                <h4 class="list-group-item-heading">
+                    {{ order.Supplyorder.supply_order_name }}
+                     with approval {{ order.Supplyorder.approval }}
+                       has order date {{order.Supplyorder.order_date }}
+                    </h4>
+            {% endfor %}
+          </div>
+        </div><!-- /.col-lg-12 -->
+      </div>
+{% endblock %}
