@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block title %}manage sales order{% endblock %}
-
 {% block content %}
 <div class="page-header">
         <h1>Manage Sales orders</h1>
@@ -9,14 +8,48 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="list-group">
+              <table style="width:80%; margin:30px auto; border-collapse:collapse;">
+                <tr>
+                  <th>Supply order id</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Ingredient</th>
+                  <th>supplier name</th>
+                  <th>price per</th>
+                  <th>price total</th>
+                </tr>
             {% for order in incompletesalesorder %}
-                <h4 class="list-group-item-heading">
-                    {{ order.Supplyorder.supply_order_name }}
-                     with approval {{ order.Supplyorder.approval }}
-                       has order date {{order.Supplyorder.order_date }}
-                    </h4>
+                <tr>
+                    <td>{{ order.Supplyorder.supply_order_id }}</td>
+                    <td>{{ order.Supplyorder.order_date }}</td>
+                    <td>{{ order.Ingredientorder.amount }}</td>
+                    <td>{{ order.Ingredient.ingredient_name }}</td>
+                    <td>{{ order.Supplier.supplier_name }}</td>
+                    <td>{{ order.Ingredientsupplier.price }}</td>
+                    <td>{{ order.Ingredientsupplier.price*order.Ingredientorder.amount }}</td>
+                </tr>
             {% endfor %}
+                </table>
+                <form class="form-horizontal" method="POST" action="{{ url_for('main.addsalesingredient') }}">
+                    <fieldset>
+                        <select name="supply_order_id" font=black>
+                            {% for order in incompletesalesorder %}
+                            <option value={{ order.Supplyorder.supply_order_id }} font=black>{{ order.Supplyorder.supply_order_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="ingredient_supplier_id" font=black>
+                            {% for ingredient in ingredientsupply %}
+                            <option value={{ ingredient.Ingredientsupplier.ingredient_supplier_id }} font=black>
+                                ingredient:{{ ingredient.Ingredient.ingredient_name }} 
+                                supplier:{{ ingredient.Supplier.supplier_name }} 
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" class="form-control" name="amount" id="input_count" placeholder="count">
+                        <button type="submit" class="btn btn-primary">Add ingredient to supply order</button>
+                    </fieldset>
+                </form>
           </div>
-        </div><!-- /.col-lg-12 -->
+        </div>
       </div>
 {% endblock %}

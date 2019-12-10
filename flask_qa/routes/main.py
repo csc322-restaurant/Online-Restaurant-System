@@ -172,16 +172,37 @@ def acceptorder(supply_order_id):
 
     return redirect(url_for('main.salesorder'))
 
+@main.route('/addsalesingredient', methods=['GET', 'POST'])
+@login_required
+def addsalesingredient():
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    ingredientorder = Ingredientorder(
+        supply_order_id = request.form['supply_order_id'],
+        ingredient_supplier_id = request.form['ingredient_supplier_id'],
+        amount = request.form['amount']
+    )
+    db.session.add(ingredientorder)
+    db.session.commit()
+
+    return redirect(url_for('main.managesalesorder'))
+
 @main.route('/managesalesorder')
 @login_required
 def managesalesorder():
-    if not (current_user.role == 'Salesmanager'):
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
         return redirect(url_for('main.index'))
 
-    salesorderlist = db.session.query(Supplyorder, Ingredientorder)\
+    salesorderlist = db.session.query(Supplyorder,\
+         Ingredientorder,Ingredientsupplier, Supplier, Ingredient)\
+        .filter(Supplyorder.approval == False)\
         .filter(Supplyorder.supply_order_id == Ingredientorder.supply_order_id)\
         .filter(Supplyorder.restaurant_id == current_user.restaurant_id)\
-        .filter(Supplyorder.approval == False)\
+        .filter(Ingredientorder.ingredient_supplier_id == Ingredientsupplier.ingredient_supplier_id)\
+        .filter(Ingredientsupplier.ingredient_id == Ingredient.ingredient_id)\
+        .filter(Ingredientsupplier.supplier_id == Supplier.supplier_id)\
+        .order_by(Supplyorder.supply_order_id)\
         .all()
     ingredientsupplierlist = db.session.query(Ingredientsupplier, Supplier, Ingredient)\
         .filter(Ingredientsupplier.ingredient_id == Ingredient.ingredient_id)\
@@ -225,3 +246,87 @@ def promote(user_id):
     db.session.commit()
 
     return redirect(url_for('main.users'))
+
+@main.route('/addingredient', methods=['GET', 'POST'])
+@login_required
+def addingredient():
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    ingredient = Ingredient(
+        ingredient_name = request.form['ingredient_name']
+    )
+    db.session.add(ingredient)
+    db.session.commit()
+
+    return redirect(url_for('main.manageingredients'))
+
+@main.route('/addsupplier', methods=['GET', 'POST'])
+@login_required
+def addsupplier():
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    supplier = Supplier(
+        supplier_name = request.form['supplier_name']
+    )
+    db.session.add(supplier)
+    db.session.commit()
+
+    return redirect(url_for('main.manageingredients'))
+
+@main.route('/addingredientsupplier', methods=['GET', 'POST'])
+@login_required
+def addingredientsupplier():
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    ingredientsupplier = Ingredientsupplier(
+        supplier_name = request.form['supplier_name'],
+        price = request.form['price'],
+        ingredient_id = request.form['ingredient_id'],
+        supplier_id = request.form['supplier_id']
+    )
+    db.session.add(ingredientsupplier)
+    db.session.commit()
+
+    return redirect(url_for('main.manageingredients'))
+
+@main.route('/manageingredients')
+@login_required
+def manageingredients():
+    if (current_user.role != 'Salesmanager' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    suppliers = db.session.query(Supplier).all()
+    ingredients = db.session.query(Ingredient).all()
+    ingredientsuppliers = db.session.query(Ingredientsupplier, Supplier, Ingredient)\
+        .filter(Ingredientsupplier.ingredient_id == Ingredient.ingredient_id)\
+        .filter(Ingredientsupplier.supplier_id == Supplier.supplier_id)\
+        .all()
+    
+    context = {
+        'suppliers' : suppliers,
+        'ingredients' : ingredients,
+        'ingredientsuppliers' : ingredientsuppliers
+    }
+
+    return render_template('manageingredients.html', **context)
+
+@main.route('/managemenu')
+@login_required
+def managemenu(user_id):
+    if not (current_user.role == 'Manager'):
+        return redirect(url_for('main.index'))
+
+    menu = db.session.query(Menu, Dish, Food)\
+        .filter(Menu.menu_id == Dish.dish_id)\
+        .filter(Dish.food_id == Food.food_id)\
+        .order_by(Menu.menu_id)\
+        .all()
+    
+    context = {
+        'menu' : menu
+    }
+
+    return render_template('managemenu.html', **context)
