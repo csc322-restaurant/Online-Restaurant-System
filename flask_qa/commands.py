@@ -14,12 +14,12 @@ def create_tables():
     db.drop_all()
     db.create_all()
     restaurant1 = Restaurant(
-        restaurant_name = 'sushirestaurant',
+        restaurant_name = 'Tamashi Sushi',
         latitude = 123,
         longitude = 45
     )
     restaurant2 = Restaurant(
-        restaurant_name = 'sushirestaurant2',
+        restaurant_name = 'Ariyoshi',
         latitude = 1234,
         longitude = 455
     )
@@ -284,52 +284,191 @@ def create_tables():
         asked_by_id = 2,
         expert_id = 1
     )
-    testIngredient = Ingredient(
-        ingredient_name = 'vegetable'
+   
+    ingredient1 = Ingredient(
+        ingredient_name = 'Seaweed'
     )
-    testSupplier = Supplier(
-        supplier_name = 'a company name for salary'
+    ingredient2 = Ingredient(
+        ingredient_name = 'Shrimp'
     )
-    testIngredientsupplier = Ingredientsupplier(
-        supplier_name = 'buying because vegatable',
-        price = 4,
+    ingredient3 = Ingredient(
+        ingredient_name = 'Tuna'
+    )
+    ingredient4 = Ingredient(
+        ingredient_name = 'Salmon'
+    )
+    ingredient5 = Ingredient(
+        ingredient_name = 'Rice'
+    )
+    ingredient6 = Ingredient(
+        ingredient_name = 'Cucumber'
+    )
+    ingredient7 = Ingredient(
+        ingredient_name = 'Sushi Vinegar'
+    )
+    supplier1 = Supplier(
+        supplier_name = 'Fresh Seafood'
+    )
+    supplier2 = Supplier(
+        supplier_name = 'Umi'
+    )
+    supplier3 = Supplier(
+        supplier_name = 'Blue Ocean'
+    )
+    ingredientSupplier1 = Ingredientsupplier(
+        supplier_name = 'Fresh Seafood',
+        price = 2.20,
         ingredient_id = 1,
         supplier_id = 1
     )
-    testSupplyorder = Supplyorder(
-        supply_order_name = 'ordering for rest 1',
+    ingredientSupplier2 = Ingredientsupplier(
+        supplier_name = 'Fresh Seafood',
+        price = 3.10,
+        ingredient_id = 3,
+        supplier_id = 1
+    )
+    ingredientSupplier3 = Ingredientsupplier(
+        supplier_name = 'Umi',
+        price = 2.75,
+        ingredient_id = 5,
+        supplier_id = 2
+    )
+    ingredientSupplier4 = Ingredientsupplier(
+        supplier_name = 'Umi',
+        price = 4.33,
+        ingredient_id = 2,
+        supplier_id = 2
+    )
+    ingredientSupplier5 = Ingredientsupplier(
+        supplier_name = 'Blue Ocean',
+        price = 3.87,
+        ingredient_id = 4,
+        supplier_id = 3
+    )
+    ingredientSupplier6 = Ingredientsupplier(
+        supplier_name = 'Blue Ocean',
+        price = 1.22,
+        ingredient_id = 6,
+        supplier_id = 3
+    )
+    ingredientSupplier7 = Ingredientsupplier(
+        supplier_name = 'Umi',
+        price = 2.25,
+        ingredient_id = 7,
+        supplier_id = 2
+    )
+    supplyOrder1 = Supplyorder(
+        supply_order_name = 'Order for Tamashi Sushi',
         approval = False,
         restaurant_id = 1
     )
-    testIngredientorder = Ingredientorder(
-        amount = 1,
+    supplyOrder2 = Supplyorder(
+        supply_order_name = 'Order for Ariyoshi',
+        approval = False,
+        restaurant_id = 2
+    )
+    ingredientOrder1 = Ingredientorder(
+        amount = 20,
         supply_order_id = 1,
-        ingredient_supplier_id = 1
+        ingredient_supplier_id = 3
     )
-    testFood = Food(
-        food_name = 'sushi'
+    ingredientOrder2 = Ingredientorder(
+        amount = 15,
+        supply_order_id = 1,
+        ingredient_supplier_id = 5
     )
-    testRecipe = Recipe(
+    ingredientOrder3 = Ingredientorder(
+        amount = 8,
+        supply_order_id = 2,
+        ingredient_supplier_id = 4
+    )
+    food1 = Food(
+        food_name = 'Shrimp Sushi'
+    )
+    food2 = Food(
+        food_name = 'Salmon Sushi'
+    )
+    food3 = Food(
+        food_name = 'Cucumber Roll'
+    )
+    recipe1 = Recipe(
         food_id = 1,
         ingredient_supplier_id = 1
     )
-    testMenu = Menu(
-        menu_name = 'first menu'
+    recipe2 = Recipe(
+        food_id = 1,
+        ingredient_supplier_id = 2
     )
-    testDish = Dish(
-        price = 1,
+    recipe3 = Recipe(
+        food_id = 1,
+        ingredient_supplier_id = 2
+    )
+    recipe4 = Recipe(
+        food_id = 2,
+        ingredient_supplier_id = 3
+    )
+    recipe5 = Recipe(
+        food_id = 2,
+        ingredient_supplier_id = 2
+    )
+    recipe6 = Recipe(
+        food_id = 2,
+        ingredient_supplier_id = 2
+    )
+    recipe7 = Recipe(
+        food_id = 3,
+        ingredient_supplier_id = 1
+    )
+    recipe8 = Recipe(
+        food_id = 3,
+        ingredient_supplier_id = 2
+    )
+    recipe9 = Recipe(
+        food_id = 3,
+        ingredient_supplier_id = 3
+    )
+    menu1 = Menu(
+        menu_name = 'Tamashi Sushi Menu',
+        restaurant_id = 1
+    )
+    menu2 = Menu(
+        menu_name = 'Ariyoshi Menu',
+        restaurant_id = 2
+    )
+    dish1 = Dish(
+        price = 3.50,
         menu_id = 1,
         food_id = 1
     )
-    testOrder = Order(
+    dish2 = Dish(
+        price = 4.20,
+        menu_id = 2,
+        food_id = 2
+    )
+    order1 = Order(
         order_success = False,
-        user_id = 1,
+        user_id = 15,
         restaurant_id = 1
     )
-    testOrderfood = Orderfood(
+    order2 = Order(
+        order_success = False,
+        user_id = 17,
+        restaurant_id = 2
+    )
+    orderFood1 = Orderfood(
         dish_id = 1,
         order_id = 1
     )
+    orderFood2 = Orderfood(
+        dish_id = 2,
+        order_id = 1
+    )
+    orderFood3 = Orderfood(
+        dish_id = 2,
+        order_id = 2
+    )
+
+
     db.session.add(restaurant1)
     db.session.add(restaurant2)
     db.session.add(admin)
@@ -358,16 +497,48 @@ def create_tables():
     db.session.add(testSalary)
     db.session.add(testWarnings)
     db.session.add(testQuestion)
-    db.session.add(testIngredient)
-    db.session.add(testSupplier)
-    db.session.add(testIngredientsupplier)
-    db.session.add(testSupplyorder)
-    db.session.add(testIngredientorder)
-    db.session.add(testFood)
-    db.session.add(testRecipe)
-    db.session.add(testMenu)
-    db.session.add(testDish)
-    db.session.add(testOrder)
-    db.session.add(testOrderfood)
+    db.session.add(ingredient1)
+    db.session.add(ingredient2)
+    db.session.add(ingredient3)
+    db.session.add(ingredient4)
+    db.session.add(ingredient5)
+    db.session.add(ingredient6)
+    db.session.add(ingredient7)
+    db.session.add(supplier1)
+    db.session.add(supplier2)
+    db.session.add(supplier3)
+    db.session.add(ingredientSupplier1)
+    db.session.add(ingredientSupplier2)
+    db.session.add(ingredientSupplier3)
+    db.session.add(ingredientSupplier4)
+    db.session.add(ingredientSupplier5)
+    db.session.add(ingredientSupplier6)
+    db.session.add(ingredientSupplier7)
+    db.session.add(supplyOrder1)
+    db.session.add(supplyOrder2)
+    db.session.add(ingredientOrder1)
+    db.session.add(ingredientOrder2)
+    db.session.add(ingredientOrder3)
+    db.session.add(food1)
+    db.session.add(food2)
+    db.session.add(food3)
+    db.session.add(recipe1)
+    db.session.add(recipe2)
+    db.session.add(recipe3)
+    db.session.add(recipe4)
+    db.session.add(recipe5)
+    db.session.add(recipe6)
+    db.session.add(recipe7)
+    db.session.add(recipe8)
+    db.session.add(recipe9)
+    db.session.add(menu1)
+    db.session.add(menu2)
+    db.session.add(dish1)
+    db.session.add(dish2)
+    db.session.add(order1)
+    db.session.add(order2)
+    db.session.add(orderFood1)
+    db.session.add(orderFood2)
+    db.session.add(orderFood3)
     db.session.commit()
     

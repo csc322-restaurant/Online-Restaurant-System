@@ -19,6 +19,13 @@ class Restaurant(db.Model):
         lazy=True
     )
 
+    menu_of_restaurant = db.relationship(
+        'Menu', 
+        foreign_keys='Menu.restaurant_id', 
+        backref='menu_of_restaurant', 
+        lazy=True
+    )
+
     #ingredient order restaurant
     restaurant_orders = db.relationship(
         'Supplyorder', 
@@ -236,6 +243,7 @@ class Recipe(db.Model):
 class Menu(db.Model):
     menu_id = db.Column(db.Integer, primary_key=True)
     menu_name =  db.Column(db.String(50), nullable=False, default='menu')
+    restaurant_id = db.Column(db.Integer, db.ForeignKey('restaurant.restaurant_id'))
     #each menu has ingredients
     menu_has_fooditems = db.relationship(
         'Dish', 
