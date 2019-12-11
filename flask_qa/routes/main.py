@@ -522,11 +522,37 @@ def rating():
     }
 
     return render_template('rating.html', **context)
+@main.route('/addtoorder', methods=['GET', 'POST'])
+@login_required
+def addtoorder():
+    if not (current_user.role == 'Registered' or current_user.role == 'VIP' or current_user.role == 'Manager'):
+        return redirect(url_for('main.index'))
+        
+    orderfood = Orderfood(
+        dish_id = request.form['dish_id'],
+        order_id = request.form['order_id']
+    )
+    db.session.add(orderfood)
+    db.session.commit()
+
+    return redirect(url_for('main.customermenu'))
+
+@main.route('/submitorder/<int:order_id>')
+@login_required
+def submitorder(order_id):
+    if not (current_user.role == 'Registered' or current_user.role == 'VIP' or current_user.role == 'Manager'):
+        return redirect(url_for('main.index'))
+
+    order = Order.query.get_or_404(order_id)
+    order.customer_submit = True
+    db.session.commit()
+
+    return redirect(url_for('main.rating'))
 
 @main.route('/createorder', methods=['GET', 'POST'])
 @login_required
 def createorder():
-    if (current_user.role == 'Registered'):
+    if not (current_user.role == 'Registered' or current_user.role == 'VIP' or current_user.role == 'Manager'):
         return redirect(url_for('main.index'))
         
     order = Order(
@@ -539,12 +565,12 @@ def createorder():
     db.session.add(order)
     db.session.commit()
 
-    return redirect(url_for('main.rating'))
+    return redirect(url_for('main.customermenu'))
 
 @main.route('/customermenu')
 @login_required
 def customermenu():
-    if (current_user.role == 'Registered' or current_user.role == 'VIP' and current_user.role != 'SalesManager'):
+    if (current_user.role != 'Registered' and current_user.role != 'VIP' and current_user.role != 'Manager'):
         return redirect(url_for('main.index'))
     menu = db.session.query(Dish, Menu, Dishrating, Food)\
         .filter(Menu.restaurant_id == current_user.restaurant_id)\
@@ -552,15 +578,18 @@ def customermenu():
         .filter(Dishrating.dish_id == Dish.dish_id)\
         .filter(Dish.food_id == Food.food_id)\
         .all()
-    
+    orderlist =  db.session.query(Order).all()
     order = db.session.query(Order, Orderfood, Dish, Food)\
         .filter(Order.restaurant_id == current_user.restaurant_id)\
+        .filter(Order.user_id == current_user.id)\
         .filter(Order.order_id == Orderfood.order_id)\
-        .filter(Dishrating.dish_id == Dish.dish_id)\
+        .filter(Orderfood.dish_id == Dish.dish_id)\
         .filter(Dish.food_id == Food.food_id)\
         .all()
     context = {
-        'menu' : menu
+        'menu' : menu,
+        'order' : order,
+        'orderlist' : orderlist
     }
 
     return render_template('customermenu.html', **context)

@@ -26,12 +26,54 @@
                         </tr>
                     {% endfor %}
                 </table>
-                {% for user in users %}
                 <a href="{{ url_for('main.createorder') }}" >
                     <h4 class="list-group-item-heading">create a new order by clicking here</h4>
                 </a>
-                {% endfor %}
                 shopping cart
+                <form class="form-horizontal" method="POST" action="{{ url_for('main.addtoorder') }}">
+                        <fieldset>
+                        <select name="order_id" font=black>
+                        {% for orderitem in orderlist %}
+                        <option style="background-color: black"  value={{ orderitem.order_id }} font=black>
+                            menu item:{{ orderitem.order_id }}
+                        </option>
+                        {% endfor %}
+                        </select>
+                        <select name="dish_id" font=black>
+                            {% for menuitem in menu %}
+                            <option style="background-color: black"  value={{ menuitem.Dish.dish_id }} font=black>
+                                food item:{{ menuitem.Food.food_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                            <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </fieldset>
+                </form>
+                <table style="width:100%; margin:30px auto; border-collapse:collapse;">
+                        <tr>
+                            <th>customer submit</th>
+                            <th>order_success</th>
+                            <th>order_id</th>
+                            <th>food_name</th>
+                            <th>price</th>
+                        </tr>
+                        {% for orderitem in order %}
+                            <tr>
+                                <td>{{ orderitem.Order.customer_submit }}</td>
+                                <td>{{ orderitem.Order.order_success }}</td>
+                                <td>{{ orderitem.Order.order_id }}</td>
+                                <td>{{ orderitem.Food.food_name  }}</td>
+                                <td>{{ orderitem.Dish.price  }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    {% for orderitem in orderlist %}    
+                <a href="{{ url_for('main.submitorder', order_id = orderitem.order_id) }}" >
+                    <h4 class="list-group-item-heading">click here to submit for order {{orderitem.order_id}}</h4>
+                    {% endfor %}
+                </a>
           </div>
         </div><!-- /.col-lg-12 -->
       </div>
