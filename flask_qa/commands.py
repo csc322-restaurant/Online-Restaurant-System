@@ -5,7 +5,7 @@ from .extensions import db
 from .models import Restaurant, User,\
     Rating, Salary, Warnings, Question, \
     Ingredient, Supplier, Ingredientsupplier, \
-    Supplyorder, Ingredientorder, Food, Recipe, \
+    Supplyorder, Ingredientorder, Food, Recipe, Dishrating, \
     Menu, Dish, Order, Orderfood
 
 @click.command(name='create_tables')
@@ -15,20 +15,20 @@ def create_tables():
     db.create_all()
     restaurant1 = Restaurant(
         restaurant_name = 'Tamashi Sushi',
-        latitude = 123,
-        longitude = 45
+        latitude = 40.819559755836345,
+        longitude = -73.95083723082894
     )
     restaurant2 = Restaurant(
         restaurant_name = 'Ariyoshi',
-        latitude = 1234,
-        longitude = 455
+        latitude = 40.80789944202298,
+        longitude = -73.9632397653138
     )
     admin = User(
         name='admin', 
         unhashed_password='admin',
         creditCardNumber=123,
-        latitude=123,
-        longitude=123,
+        latitude=40.807688303247005,
+        longitude=-73.9578866060208,
         role='Manager',
         requestedRole='Manager',
         restaurant_id=1,
@@ -267,6 +267,7 @@ def create_tables():
     )
     testRating = Rating(
         rating = 3,
+        message = 'hello rating person',
         rated_id = 1,
         rater_id = 2
     )
@@ -431,16 +432,24 @@ def create_tables():
     dish1 = Dish(
         price = 3.50,
         menu_id = 1,
-        food_id = 1
+        food_id = 1,
+        user_id = 8
     )
     dish2 = Dish(
         price = 4.20,
         menu_id = 2,
-        food_id = 2
+        food_id = 2,
+        user_id = 8
+    )
+    dishrating1 = Dishrating(
+        rating = 2,
+        dish_id = 1,
+        user_id = 1
     )
     order1 = Order(
         order_success = False,
-        user_id = 15,
+        user_id = 1,
+        deliverer_id = 12,
         restaurant_id = 1
     )
     order2 = Order(
@@ -528,6 +537,7 @@ def create_tables():
     db.session.add(menu2)
     db.session.add(dish1)
     db.session.add(dish2)
+    db.session.add(dishrating1)
     db.session.add(order1)
     db.session.add(order2)
     db.session.add(orderFood1)

@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from flask_login import current_user, login_required
+from sqlalchemy.sql import func
 
 from flask_qa.extensions import db
 
@@ -438,10 +439,31 @@ def managefoodingredients():
 def rateuser():
     if (current_user.role == 'Visitor'):
         return redirect(url_for('main.index'))
-
+        
+    ratingavg = db.session.query(func.avg(Rating.rating)\
+        .label('average'))\
+        .filter(Rating.rater_id == current_user.id)\
+        .scalar()
+    ordernum = db.session.query(func.count(Order.order_id)).\
+        filter(Order.user_id == current_user.id).\
+        scalar()
+    if (current_user.role == 'Registered'):
+        if(ratingavg >= 4 and ordernum >= 3):
+            user = User.query.get_or_404(current_user.id)
+            user.role = 'VIP'
+            db.session.commit()
+        if(ratingavg <= 2 and ratingavg > 1 and ordernum >= 3):
+            user = User.query.get_or_404(current_user.id)
+            user.role = 'Visitor'
+            db.session.commit()
+        if(ratingavg == 1 and ordernum >= 3):
+            user = User.query.get_or_404(current_user.id)
+            user.role = 'Blacklisted'
+            db.session.commit()
+    rated_id = request.form['rated_id']
     rating = Rating(
         rating = request.form['rating'],
-        rated_id = request.form['rated_id'],
+        rated_id = rated_id,
         rater_id = current_user.id
     )
     db.session.add(rating)
@@ -452,31 +474,77 @@ def rateuser():
 @main.route('/rating')
 @login_required
 def rating():
-    if (current_user.role == 'Visitor'):
+    if (current_user.role == 'Visitor' or current_user.role == 'Blacklisted'):
         return redirect(url_for('main.index'))
-    user = db.session.query(User).all()
+    user = db.session.query(User)\
+        .filter(User.id != current_user.id)\
+        .all()
+    user2 = db.session.query(User, Order)\
+        .filter(User.id != current_user.id)\
+        .all()
     rating = db.session.query(Rating, User)\
+        .filter(User.id != current_user.id)\
         .filter(Rating.rated_id == current_user.id)\
         .filter(Rating.rater_id == User.id)\
         .all()
     if (current_user.role == 'Registered'):
-        user = db.session.query(User, Order)\
+        user2 = db.session.query(User, Order)\
+        .filter(User.id != current_user.id)\
         .filter(User.id == Order.user_id)\
         .order_by(Order.order_date)\
         .all()
     if (current_user.role == 'Deliverer'):
-        user = db.session.query(User, Order)\
+        user2 = db.session.query(User, Order)\
+        .filter(User.id != current_user.id)\
         .filter(User.id == Order.deliverer_id)\
         .order_by(Order.order_date)\
         .all()
     if (current_user.role == 'Chef'):
         user = db.session.query(User)\
+        .filter(User.id != current_user.id)\
         .filter(User.restaurant_id == current_user.restaurant_id)\
         .filter(User.role == 'Salesmanager')\
         .all()
+    ratingavg = db.session.query(func.avg(Rating.rating)\
+            .label('average'))\
+            .filter(Rating.rater_id == current_user.id)\
+            .scalar()
+    ordernum = db.session.query(func.count(Order.order_id)).\
+        filter(Order.user_id == current_user.id).\
+        scalar()
     context = {
         'user' : user,
-        'rating' : rating
+        'user2' : user2,
+        'rating' : rating,
+        'ratingavg' : ratingavg,
+        'ordernum' : ordernum
     }
 
     return render_template('rating.html', **context)
+
+
+@main.route('/orderfood')
+@login_required
+def orderfood():
+    if (current_user.role == 'Registered' or current_user.role == 'VIP' and current_user.role != 'SalesManager'):
+        return redirect(url_for('main.index'))
+    ingredientsuppliers = db.session.query(Ingredientsupplier, Ingredient, Supplier)\
+        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
+        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
+        .all()
+    food = db.session.query(Food).all()
+    foodingredients = db.session.query(Food, Recipe, Ingredientsupplier, Ingredient, Supplier)\
+        .filter(Food.food_id == Recipe.food_id)\
+        .filter(Recipe.ingredient_supplier_id == Ingredientsupplier.ingredient_supplier_id)\
+        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
+        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
+        .order_by(Food.food_id)\
+        .all()
+    
+    context = {
+        'foodingredients' : foodingredients,
+        'food' : food,
+        'ingredientsuppliers' : ingredientsuppliers
+    }
+
+    return render_template('managefoodingredients.html', **context)

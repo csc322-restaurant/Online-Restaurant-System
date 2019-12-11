@@ -117,10 +117,17 @@ class User(UserMixin, db.Model):
         lazy=True
     )
     #gets the orders of the user
-    cook_orders = db.relationship(
-        'Order',
-        foreign_keys='Order.cook_id',
-        backref='order_from_cook',
+    cookof = db.relationship(
+        'Dish',
+        foreign_keys='Dish.user_id',
+        backref='iscook',
+        lazy=True
+    )
+    #gets the ratings of the user on food
+    food_rating = db.relationship(
+        'Dishrating',
+        foreign_keys='Dishrating.user_id',
+        backref='food_rating',
         lazy=True
     )
 
@@ -136,6 +143,7 @@ class User(UserMixin, db.Model):
 class Rating(db.Model):
     rating_id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer, nullable=False, default=3)
+    message = db.Column(db.String(50), default='rating desc')
     rating_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     rated_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     rater_id = db.Column(db.Integer, db.ForeignKey('user.id'))
@@ -246,6 +254,7 @@ class Food(db.Model):
         backref='menu_has_Food', 
         lazy=True
     )
+
 #what ingredients are in each food item
 class Recipe(db.Model):
     recipe_id = db.Column(db.Integer, primary_key=True)
@@ -272,6 +281,7 @@ class Dish(db.Model):
     dish_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     menu_id = db.Column(db.Integer, db.ForeignKey('menu.menu_id'))
     food_id = db.Column(db.Integer, db.ForeignKey('food.food_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     #each dish can have orders
     dish_in_orders = db.relationship(
         'Orderfood', 
@@ -279,6 +289,19 @@ class Dish(db.Model):
         backref='orders_has_dish', 
         lazy=True
     )
+    #each dish can have ratings
+    ratings_of_dish = db.relationship(
+        'Dishrating', 
+        foreign_keys='Dishrating.dish_id', 
+        backref='dish_in_ratings', 
+        lazy=True
+    )
+#Any chef can add fooditems to a menu
+class Dishrating(db.Model):
+    Dishrating_id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer)
+    dish_id = db.Column(db.Integer, db.ForeignKey('dish.dish_id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 #any chef can make a menu
 class Order(db.Model):
@@ -286,7 +309,6 @@ class Order(db.Model):
     order_success = db.Column(db.Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     deliverer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    cook_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     restaurant_id= db.Column(db.Integer, db.ForeignKey('restaurant.restaurant_id'))
     order_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     #each dish can have orders

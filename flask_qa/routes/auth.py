@@ -21,7 +21,6 @@ def register():
         longitude = request.form['longitude']
         requestedRole = request.form['role']
         restaurant = request.form['restaurant']
-        admin = (request.form['admin'] == 'True')
         role = 'visitor'
         if(admin == True):
             role = requestedRole
@@ -34,8 +33,7 @@ def register():
             longitude=longitude,
             role=role,
             requestedRole=requestedRole,
-            restaurant=restaurant,
-            admin=admin,
+            restaurant=restaurant
         )
 
         db.session.add(user)

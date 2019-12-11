@@ -31,13 +31,13 @@
                   <div class="form-group">
                     <label for="inputlatitude" class="col-lg-2 control-label">latitude</label>
                     <div class="col-lg-10">
-                      <input type="number" step="any" class="form-control" name="latitude" id="inputlatitude" placeholder="latitude">
+                      <input type="number" step="any" class="form-control" name="latitude" id="latitude" placeholder="latitude">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="inputlongitude" class="col-lg-2 control-label">longitude</label>
                     <div class="col-lg-10">
-                      <input type="number" step="any" class="form-control" name="longitude" id="inputlongitude" placeholder="longitude">
+                      <input type="number" step="any" class="form-control" name="longitude" id="longitude" placeholder="longitude">
                     </div>
                   </div>
                   <div class="form-group">
@@ -62,13 +62,9 @@
                       <button type="submit" class="btn btn-primary">Register</button>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="inputRole" class="col-lg-2 control-label" font=black>Registering for role</label>
-                    <select name="admin" font=black>
-                      <option value="False" font=black>False</option>
-                      <option value="True" font=black>True</option>
-                    </select>
-                  </div>
+                  drag your marker to your address
+                  <div id="myMap"></div>
+                <input id="address" type="text" style="width:600px;"/><br/>
                 </fieldset>
               </form>
             </div>
