@@ -20,10 +20,8 @@ def register():
         latitude = request.form['latitude']
         longitude = request.form['longitude']
         requestedRole = request.form['role']
-        restaurant = request.form['restaurant']
+        restaurant_id = request.form['restaurant_id']
         role = 'visitor'
-        if(admin == True):
-            role = requestedRole
 
         user = User(
             name=name, 
@@ -33,15 +31,18 @@ def register():
             longitude=longitude,
             role=role,
             requestedRole=requestedRole,
-            restaurant=restaurant
+            restaurant_id=restaurant_id
         )
 
         db.session.add(user)
         db.session.commit()
-
+        
         return redirect(url_for('auth.login'))
-
-    return render_template('register.html')
+    restaurants = db.session.query(Restaurant).all()
+    context = {
+        'restaurants' : restaurants
+    }
+    return render_template('register.html', **context)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():

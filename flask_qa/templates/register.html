@@ -51,10 +51,15 @@
                       <option value="Manager" font=black>Manager</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label for="inputRestaurant" class="col-lg-2 control-label">restaurant</label>
-                    <div class="col-lg-10">
-                      <input type="text" class="form-control" name="restaurant" id="inputRestaurant" placeholder="restaurant">
+                    <div class="form-group">
+                      <div class="col-lg-10 col-lg-offset-2">
+                       <select name="restaurant_id" font=black>
+                          {% for restaurant in restaurants %}
+                          <option style="background-color: black"  value={{ restaurant.restaurant_id }} font=black>
+                              name:{{ restaurant.restaurant_name }} 
+                          </option>
+                          {% endfor %}
+                      </select>
                     </div>
                   </div>
                   <div class="form-group">
