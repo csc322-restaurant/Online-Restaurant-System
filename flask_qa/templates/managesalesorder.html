@@ -34,12 +34,12 @@
                     <fieldset>
                         <select name="supply_order_id" font=black>
                             {% for order in incompletesalesorder %}
-                            <option value={{ order.Supplyorder.supply_order_id }} font=black>{{ order.Supplyorder.supply_order_name }}</option>
+                            <option style="background-color: black" value={{ order.Supplyorder.supply_order_id }} font=black>{{ order.Supplyorder.supply_order_name }}</option>
                             {% endfor %}
                         </select>
                         <select name="ingredient_supplier_id" font=black>
                             {% for ingredient in ingredientsupply %}
-                            <option value={{ ingredient.Ingredientsupplier.ingredient_supplier_id }} font=black>
+                            <option style="background-color: black"  value={{ ingredient.Ingredientsupplier.ingredient_supplier_id }} font=black>
                                 ingredient:{{ ingredient.Ingredient.ingredient_name }} 
                                 supplier:{{ ingredient.Supplier.supplier_name }} 
                             </option>

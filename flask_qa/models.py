@@ -177,7 +177,6 @@ class Supplier(db.Model):
 #list of suppliers and ingredients with their price of it
 class Ingredientsupplier(db.Model):
     ingredient_supplier_id = db.Column(db.Integer, primary_key=True)
-    supplier_name =  db.Column(db.String(50))
     update_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     price = db.Column(db.Float, nullable=False, default=1)
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.ingredient_id'))

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}managemenu{% endblock %}
+
+{% block content %}
+<div class="page-header">
+        <h1>Manage ingredients of food</h1>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="list-group"> 
+            <table style="width:100%; margin:30px auto; border-collapse:collapse;">
+                <tr>
+                    <th>food_id</th>
+                    <th>food_name</th>
+                    <th>ingredient_name</th>
+                    <th>supplier_name</th>
+                    <th>price</th>
+                </tr>
+                {% for foodingredient in foodingredients %}
+                    <tr>
+                        <td>{{ foodingredient.Food.food_id  }}</td>
+                        <td>{{ foodingredient.Food.food_name  }}</td>
+                        <td>{{ foodingredient.Ingredient.ingredient_name  }}</td>
+                        <td>{{ foodingredient.Supplier.supplier_name  }}</td>
+                        <td>{{ foodingredient.Ingredientsupplier.price  }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            -------------------------------------------------------------------------------------------------
+            <form class="form-horizontal" method="POST" action="{{ url_for('main.managefoodingredients') }}">
+                <fieldset>
+                    <select name="ingredient_id" font=black>
+                        {% for fooditem in food %}
+                        <option style="background-color: black" value={{ fooditem.food_id }} font=black>{{ fooditem.food_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="supplier_id" font=black>
+                        {% for ingredientsupplier in ingredientsuppliers %}
+                        <option style="background-color: black" 
+                            value={{ ingredientsupplier.Ingredientsupplier.ingredient_supplier_id }} font=black>
+                            {{ ingredientsupplier.Ingredient.ingredient_name }} has supplier
+                            {{ ingredientsupplier.Supplier.supplier_name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Add ingredient to food</button>
+                </fieldset>
+            </form>
+        </div>
+      </div><!-- /.col-lg-12 -->
+    </div>
+    <div>
+        
+    </div>
+{% endblock %}

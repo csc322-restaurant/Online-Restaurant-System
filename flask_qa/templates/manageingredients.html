@@ -37,16 +37,14 @@
                 <table style="width:80%; margin:30px auto; border-collapse:collapse;">
                     <tr>
                         <th>ingredientsupplier_id</th>
-                        <th>supply Information</th>
                         <th>update_date</th>
                         <th>price</th>
-                        <th>ingredient_name</th>
                         <th>supplier_name</th>
+                        <th>ingredient_name</th>
                     </tr>
                     {% for ingredientsupplier in ingredientsuppliers %}
                         <tr>
                             <td>{{ ingredientsupplier.Ingredientsupplier.supplier_id  }}</td>
-                            <td>{{ ingredientsupplier.Ingredientsupplier.supplier_name  }}</td>
                             <td>{{ ingredientsupplier.Ingredientsupplier.update_date  }}</td>
                             <td>{{ ingredientsupplier.Ingredientsupplier.price  }}</td>
                             <td>{{ ingredientsupplier.Supplier.supplier_name  }}</td>
@@ -71,16 +69,15 @@
                 -------------------------------------------------------------------------------------------------
                 <form class="form-horizontal" method="POST" action="{{ url_for('main.addingredientsupplier') }}">
                     <fieldset>
-                        <input type="text" class="form-control" name="supplier_name" id="input_supplier_name" placeholder="supplier_name">
                         <input type="number" step="any" class="form-control" name="price" id="input_price" placeholder="price">
                         <select name="ingredient_id" font=black>
                             {% for ingredient in ingredients %}
-                            <option value={{ ingredient.ingredient_id }} font=black>{{ ingredient.ingredient_name }}</option>
+                            <option style="background-color: black" value={{ ingredient.ingredient_id }} font=black>{{ ingredient.ingredient_name }}</option>
                             {% endfor %}
                         </select>
                         <select name="supplier_id" font=black>
                             {% for supplier in suppliers %}
-                            <option value={{ supplier.supplier_id }} font=black>{{ supplier.supplier_name }}</option>
+                            <option style="background-color: black" value={{ supplier.supplier_id }} font=black>{{ supplier.supplier_name }}</option>
                             {% endfor %}
                         </select>
                         <button type="submit" class="btn btn-primary">Add ingredient to supply order</button>

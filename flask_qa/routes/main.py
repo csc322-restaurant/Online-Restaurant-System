@@ -282,7 +282,6 @@ def addingredientsupplier():
         return redirect(url_for('main.index'))
 
     ingredientsupplier = Ingredientsupplier(
-        supplier_name = request.form['supplier_name'],
         price = request.form['price'],
         ingredient_id = request.form['ingredient_id'],
         supplier_id = request.form['supplier_id']
@@ -392,3 +391,44 @@ def managemenu():
     }
 
     return render_template('managemenu.html', **context)
+
+@main.route('/addrecipe', methods=['GET', 'POST'])
+@login_required
+def addrecipe():
+    if (current_user.role != 'Manager' and current_user.role != 'Chef' and current_user.role != 'SalesManager'):
+        return redirect(url_for('main.index'))
+
+    recipe = Recipe(
+        Food_id = request.form['Food_id'],
+        ingredient_supplier_id = request.form['ingredient_supplier_id']
+    )
+    db.session.add(recipe)
+    db.session.commit()
+
+    return redirect(url_for('main.managefoodingredients'))
+
+@main.route('/managefoodingredients')
+@login_required
+def managefoodingredients():
+    if (current_user.role != 'Manager' and current_user.role != 'Chef' and current_user.role != 'SalesManager'):
+        return redirect(url_for('main.index'))
+    ingredientsuppliers = db.session.query(Ingredientsupplier, Ingredient, Supplier)\
+        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
+        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
+        .all()
+    food = db.session.query(Food).all()
+    foodingredients = db.session.query(Food, Recipe, Ingredientsupplier, Ingredient, Supplier)\
+        .filter(Food.food_id == Recipe.food_id)\
+        .filter(Recipe.ingredient_supplier_id == Ingredientsupplier.ingredient_supplier_id)\
+        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
+        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
+        .order_by(Food.food_id)\
+        .all()
+    
+    context = {
+        'foodingredients' : foodingredients,
+        'food' : food,
+        'ingredientsuppliers' : ingredientsuppliers
+    }
+
+    return render_template('managefoodingredients.html', **context)

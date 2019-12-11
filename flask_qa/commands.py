@@ -316,43 +316,36 @@ def create_tables():
         supplier_name = 'Blue Ocean'
     )
     ingredientSupplier1 = Ingredientsupplier(
-        supplier_name = 'Fresh Seafood',
         price = 2.20,
         ingredient_id = 1,
         supplier_id = 1
     )
     ingredientSupplier2 = Ingredientsupplier(
-        supplier_name = 'Fresh Seafood',
         price = 3.10,
         ingredient_id = 3,
         supplier_id = 1
     )
     ingredientSupplier3 = Ingredientsupplier(
-        supplier_name = 'Umi',
         price = 2.75,
         ingredient_id = 5,
         supplier_id = 2
     )
     ingredientSupplier4 = Ingredientsupplier(
-        supplier_name = 'Umi',
         price = 4.33,
         ingredient_id = 2,
         supplier_id = 2
     )
     ingredientSupplier5 = Ingredientsupplier(
-        supplier_name = 'Blue Ocean',
         price = 3.87,
         ingredient_id = 4,
         supplier_id = 3
     )
     ingredientSupplier6 = Ingredientsupplier(
-        supplier_name = 'Blue Ocean',
         price = 1.22,
         ingredient_id = 6,
         supplier_id = 3
     )
     ingredientSupplier7 = Ingredientsupplier(
-        supplier_name = 'Umi',
         price = 2.25,
         ingredient_id = 7,
         supplier_id = 2
