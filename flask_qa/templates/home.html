@@ -3,7 +3,7 @@
 
 {% block content %}
       <div class="page-header">
-        <h1>Welcome</h1>
+        <h1>Welcome {{ current_user.name }}</h1>
       </div>
       <div class="row">
         <div class="col-lg-12">
@@ -15,8 +15,24 @@
                 <p class="list-group-item-text">Answered by: {{ question.expert.name }}</p>
               </a>
             {% endfor %}
-            <img src="/static/Sushi_platter.jpg">
+            <p style="text-align:center;">
+            <img src="/static/Sushi_platter.jpg"width="600" height="600"></p>
           </div>
+          <body>
+            <h4>Welcome to HealthySushi, an Online Sushi Restaurant System that easily allows different users to interact</h4>
+            <h4>with a variety of sushi restaurants.</h4>
+            <h4>Managers may apply to have their restaurants added. After application, they may then add their employees.</h4>
+            <h4>Chefs may add their own food items to their restaurant's menus.</h4>
+            <h4>Sales people may keep track of the ingredient orders of different restaurants.</h4>
+            <h4>Delivery people may keep track of customer orders.</h4>
+            <h4>Customers may order food items from their desired restaurants and receive benefits based on their status.</h4>
+            <h4>A rating system is also implemented to aid users in their decisions.</h4>
+            <h4>We hope that you will enjoy using HealthySushi.</h4>             
+          </body>
+          <body>
+            <h4><br><br>Developed by Masanao Yukawa and Kenji Nagasawa</h4> 
+            <a href="url">https://github.com/csc322-restaurant/Online-Restaurant-System</a>
+          </body>
         </div><!-- /.col-lg-12 -->
       </div>
 {% endblock %}
