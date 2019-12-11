@@ -62,27 +62,33 @@
         -------------------------------------------------------------------------------------------------
         <form class="form-horizontal" method="POST" action="{{ url_for('main.addmenu') }}">
             <fieldset>
-                <input type="text" class="form-control" name="menu_name" id="input_menu_name" placeholder="menu_name">
+                <input type="text" class="form-control" name="menu_name" id="input_menu_name" placeholder="menu_name" required>
                 <button type="submit" class="btn btn-primary">Add menu</button>
             </fieldset>
         </form>
         -------------------------------------------------------------------------------------------------
         <form class="form-horizontal" method="POST" action="{{ url_for('main.addfood') }}">
             <fieldset>
-                <input type="text" class="form-control" name="food_name" id="input_food_name" placeholder="food_name">
+                <input type="text" class="form-control" name="food_name" id="input_food_name" placeholder="food_name" required>
                 <button type="submit" class="btn btn-primary">Add food</button>
             </fieldset>
         </form>
         -------------------------------------------------------------------------------------------------
         <form class="form-horizontal" method="POST" action="{{ url_for('main.addfoodtomenu') }}">
             <fieldset>
-                <input type="number" step="any" class="form-control" name="price" id="input_price" placeholder="price">
+                <input type="number" step="any" class="form-control" name="price" id="input_price" placeholder="price" required>
                 <select name="menu_id" font=black>
+                    <option value="none" selected disabled hidden> 
+                        Select an Option 
+                    </option> 
                     {% for menu_item in menulist %}
-                    <option style="background-color: black" value={{ menu_item.menu_id }} font=black>{{ menu_item.menu_name }}</option>
+                    <option style="background-color: black" value={{ menu_item.menu_id }} >{{ menu_item.menu_name }}</option>
                     {% endfor %}
                 </select>
-                <select name="food_id" font=black>
+                <select name="food_id" font=black value = 1>
+                    <option value="none" selected disabled hidden> 
+                                Select an Option 
+                    </option> 
                     {% for food_item in food %}
                     <option style="background-color: black" value={{ food_item.food_id }} font=black>{{ food_item.food_name }}</option>
                     {% endfor %}

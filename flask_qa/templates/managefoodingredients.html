@@ -27,14 +27,14 @@
                 {% endfor %}
             </table>
             -------------------------------------------------------------------------------------------------
-            <form class="form-horizontal" method="POST" action="{{ url_for('main.managefoodingredients') }}">
+            <form class="form-horizontal" method="POST" action="{{ url_for('main.addrecipe') }}">
                 <fieldset>
-                    <select name="ingredient_id" font=black>
+                    <select name="food_id" font=black>
                         {% for fooditem in food %}
                         <option style="background-color: black" value={{ fooditem.food_id }} font=black>{{ fooditem.food_name }}</option>
                         {% endfor %}
                     </select>
-                    <select name="supplier_id" font=black>
+                    <select name="ingredient_supplier_id" font=black>
                         {% for ingredientsupplier in ingredientsuppliers %}
                         <option style="background-color: black" 
                             value={{ ingredientsupplier.Ingredientsupplier.ingredient_supplier_id }} font=black>

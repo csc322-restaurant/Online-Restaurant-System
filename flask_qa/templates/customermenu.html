@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Salary{% endblock %}
+
+{% block content %}
+<div class="page-header">
+        <h1>Menu items</h1>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="list-group">
+                <table style="width:100%; margin:30px auto; border-collapse:collapse;">
+                    <tr>
+                        <th>menu_id</th>
+                        <th>menu_name</th>
+                        <th>food_name</th>
+                        <th>price</th>
+                        <th>dish_rating</th>
+                    </tr>
+                    {% for menuitem in menu %}
+                        <tr>
+                            <td>{{ menuitem.Menu.menu_id  }}</td>
+                            <td>{{ menuitem.Menu.menu_name  }}</td>
+                            <td>{{ menuitem.Food.food_name  }}</td>
+                            <td>{{ menuitem.Dish.price  }}</td>
+                            <td>{{ menuitem.Dishrating.rating  }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                {% for user in users %}
+                <a href="{{ url_for('main.createorder') }}" >
+                    <h4 class="list-group-item-heading">create a new order by clicking here</h4>
+                </a>
+                {% endfor %}
+                shopping cart
+          </div>
+        </div><!-- /.col-lg-12 -->
+      </div>
+{% endblock %}

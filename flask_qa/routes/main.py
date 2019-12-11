@@ -7,7 +7,7 @@ from flask_qa.extensions import db
 from flask_qa.models import Restaurant, User,\
     Rating, Salary, Warnings, Question, \
     Ingredient, Supplier, Ingredientsupplier, \
-    Supplyorder, Ingredientorder, Food, Recipe, \
+    Supplyorder, Ingredientorder, Food, Recipe, Dishrating, \
     Menu, Dish, Order, Orderfood
 import logging
 main = Blueprint('main', __name__)
@@ -400,7 +400,7 @@ def addrecipe():
         return redirect(url_for('main.index'))
 
     recipe = Recipe(
-        Food_id = request.form['Food_id'],
+        food_id = request.form['food_id'],
         ingredient_supplier_id = request.form['ingredient_supplier_id']
     )
     db.session.add(recipe)
@@ -481,6 +481,7 @@ def rating():
         .all()
     user2 = db.session.query(User, Order)\
         .filter(User.id != current_user.id)\
+        .filter(User.id == Order.user_id)\
         .all()
     rating = db.session.query(Rating, User)\
         .filter(User.id != current_user.id)\
@@ -522,29 +523,44 @@ def rating():
 
     return render_template('rating.html', **context)
 
-
-@main.route('/orderfood')
+@main.route('/createorder', methods=['GET', 'POST'])
 @login_required
-def orderfood():
+def createorder():
+    if (current_user.role == 'Registered'):
+        return redirect(url_for('main.index'))
+        
+    order = Order(
+        customer_submit = False,
+        order_success = False,
+        user_id = current_user.id,
+        deliverer_id = current_user.id,
+        restaurant_id = current_user.restaurant_id
+    )
+    db.session.add(order)
+    db.session.commit()
+
+    return redirect(url_for('main.rating'))
+
+@main.route('/customermenu')
+@login_required
+def customermenu():
     if (current_user.role == 'Registered' or current_user.role == 'VIP' and current_user.role != 'SalesManager'):
         return redirect(url_for('main.index'))
-    ingredientsuppliers = db.session.query(Ingredientsupplier, Ingredient, Supplier)\
-        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
-        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
-        .all()
-    food = db.session.query(Food).all()
-    foodingredients = db.session.query(Food, Recipe, Ingredientsupplier, Ingredient, Supplier)\
-        .filter(Food.food_id == Recipe.food_id)\
-        .filter(Recipe.ingredient_supplier_id == Ingredientsupplier.ingredient_supplier_id)\
-        .filter(Ingredient.ingredient_id == Ingredientsupplier.ingredient_id)\
-        .filter(Supplier.supplier_id == Ingredientsupplier.supplier_id)\
-        .order_by(Food.food_id)\
+    menu = db.session.query(Dish, Menu, Dishrating, Food)\
+        .filter(Menu.restaurant_id == current_user.restaurant_id)\
+        .filter(Menu.menu_id == Dish.menu_id)\
+        .filter(Dishrating.dish_id == Dish.dish_id)\
+        .filter(Dish.food_id == Food.food_id)\
         .all()
     
+    order = db.session.query(Order, Orderfood, Dish, Food)\
+        .filter(Order.restaurant_id == current_user.restaurant_id)\
+        .filter(Order.order_id == Orderfood.order_id)\
+        .filter(Dishrating.dish_id == Dish.dish_id)\
+        .filter(Dish.food_id == Food.food_id)\
+        .all()
     context = {
-        'foodingredients' : foodingredients,
-        'food' : food,
-        'ingredientsuppliers' : ingredientsuppliers
+        'menu' : menu
     }
 
-    return render_template('managefoodingredients.html', **context)
+    return render_template('customermenu.html', **context)

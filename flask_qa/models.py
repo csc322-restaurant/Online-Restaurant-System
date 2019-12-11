@@ -306,6 +306,7 @@ class Dishrating(db.Model):
 #any chef can make a menu
 class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
+    customer_submit = db.Column(db.Boolean, nullable=False)
     order_success = db.Column(db.Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     deliverer_id = db.Column(db.Integer, db.ForeignKey('user.id'))

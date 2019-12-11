@@ -121,8 +121,11 @@
             {% if current_user.is_authenticated and (current_user.role == 'Chef' or (current_user.role == 'Manager') or (current_user.role == 'salesManager')) %}
             <li><a href="{{ url_for('main.managefoodingredients') }}">Manage food ingredients</a></li>
             {% endif %}
-            {% if current_user.is_authenticated and (current_user.role != 'Visitor') %}
+            {% if current_user.is_authenticated and (current_user.role != 'Visitor' and current_user.role != 'Blacklisted') %}
             <li><a href="{{ url_for('main.rating') }}">Rate</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and (current_user.role != 'Blacklisted') %}
+            <li><a href="{{ url_for('main.customermenu') }}">customermenu</a></li>
             {% endif %}
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>

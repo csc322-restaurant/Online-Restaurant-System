@@ -437,7 +437,7 @@ def create_tables():
     )
     dish2 = Dish(
         price = 4.20,
-        menu_id = 2,
+        menu_id = 1,
         food_id = 2,
         user_id = 8
     )
@@ -446,7 +446,13 @@ def create_tables():
         dish_id = 1,
         user_id = 1
     )
+    dishrating1 = Dishrating(
+        rating = 4,
+        dish_id = 1,
+        user_id = 1
+    )
     order1 = Order(
+        customer_submit = False,
         order_success = False,
         user_id = 1,
         deliverer_id = 12,
@@ -454,6 +460,7 @@ def create_tables():
     )
     order2 = Order(
         order_success = False,
+        customer_submit = False,
         user_id = 17,
         restaurant_id = 2
     )
