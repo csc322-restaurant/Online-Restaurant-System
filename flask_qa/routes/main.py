@@ -313,19 +313,81 @@ def manageingredients():
 
     return render_template('manageingredients.html', **context)
 
-@main.route('/managemenu')
+@main.route('/addmenu', methods=['GET', 'POST'])
 @login_required
-def managemenu(user_id):
-    if not (current_user.role == 'Manager'):
+def addmenu():
+    if (current_user.role != 'Chef' and current_user.role != 'Manager'):
         return redirect(url_for('main.index'))
 
+    menu = Menu(
+        menu_name = request.form['menu_name'],
+        restaurant_id = current_user.restaurant_id
+    )
+    db.session.add(menu)
+    db.session.commit()
+
+    return redirect(url_for('main.managemenu'))
+
+@main.route('/addfood', methods=['GET', 'POST'])
+@login_required
+def addfood():
+    if (current_user.role != 'Chef' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    food = Food(
+        food_name = request.form['food_name']
+    )
+    db.session.add(food)
+    db.session.commit()
+
+    return redirect(url_for('main.managemenu'))
+
+@main.route('/addfoodtomenu', methods=['GET', 'POST'])
+@login_required
+def addfoodtomenu():
+    if (current_user.role != 'Chef' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+
+    dish = Dish(
+        price = request.form['price'],
+        menu_id = request.form['menu_id'],
+        food_id = request.form['food_id']
+    )
+    db.session.add(dish)
+    db.session.commit()
+
+    return redirect(url_for('main.managemenu'))
+
+@main.route('/deletefoodfrommenu', methods=['GET', 'POST'])
+@login_required
+def deletefoodfrommenu():
+    if (current_user.role != 'Chef' and current_user.role != 'Manager'):
+        return redirect(url_for('main.index'))
+    Dish.query.filter_by(dish_id = request.form['dish_id']).delete()
+    db.session.commit()
+
+    return redirect(url_for('main.managemenu'))
+
+@main.route('/managemenu')
+@login_required
+def managemenu():
+    if (current_user.role != 'Manager' and current_user.role != 'Chef' ):
+        return redirect(url_for('main.index'))
+
+    menulist = db.session.query(Menu)\
+        .filter_by(restaurant_id = current_user.restaurant_id)\
+        .all()
+    food = db.session.query(Food).all()
     menu = db.session.query(Menu, Dish, Food)\
         .filter(Menu.menu_id == Dish.dish_id)\
         .filter(Dish.food_id == Food.food_id)\
+        .filter(Menu.restaurant_id == current_user.restaurant_id)\
         .order_by(Menu.menu_id)\
         .all()
     
     context = {
+        'menulist' : menulist,
+        'food' : food,
         'menu' : menu
     }
 

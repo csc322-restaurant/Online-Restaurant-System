@@ -7,11 +7,99 @@
       </div>
       <div class="row">
         <div class="col-lg-12">
-          <div class="list-group">
+          <div class="list-group"> 
+              <h4 class="list-group-item-heading">
+                <table style="width:50%; margin:30px auto; border-collapse:collapse;" align="left">
+                    <tr>
+                        <th>menu_id</th>
+                        <th>menu_name</th>
+                    </tr>
+                    {% for menuitem in menulist %}
+                        <tr>
+                            <td>{{ menuitem.menu_id }}</td>
+                            <td>{{ menuitem.menu_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </h4>
+            <h4 class="list-group-item-heading">
+                <table style="width:50%; margin:30px auto; border-collapse:collapse;" align="left">
+                    <tr>
+                        <th>food_id</th>
+                        <th>food_name</th>
+                    </tr>
+                    {% for fooditem in food %}
+                        <tr>
+                            <td>{{ fooditem.food_id }}</td>
+                            <td>{{ fooditem.food_name }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </h4>
+               
+              <table style="width:100%; margin:30px auto; border-collapse:collapse;" >
+                <tr>
+                  <th>Menu_id</th>
+                  <th>Menu_name</th>
+                  <th>food_name</th>
+                  <th>price</th>
+                  <th>dish_added_date</th>
+                </tr>
             {% for menuitem in menu %}
-                <h4 class="list-group-item-heading">{{ order.supply_order_name }} with approval {{ order.approval }}  has order date {{order.order_date }}</h4>
+                <tr>
+                    <td>{{ menuitem.Menu.menu_id  }}</td>
+                    <td>{{ menuitem.Menu.menu_name  }}</td>
+                    <td>{{ menuitem.Food.food_name  }}</td>
+                    <td>{{ menuitem.Dish.price  }}</td>
+                    <td>{{ menuitem.Dish.dish_date  }}</td>
+                </tr>
             {% endfor %}
-          </div>
-        </div><!-- /.col-lg-12 -->
-      </div>
+        </div>
+      </div><!-- /.col-lg-12 -->
+    </div>
+    <div>
+        </table>
+        -------------------------------------------------------------------------------------------------
+        <form class="form-horizontal" method="POST" action="{{ url_for('main.addmenu') }}">
+            <fieldset>
+                <input type="text" class="form-control" name="menu_name" id="input_menu_name" placeholder="menu_name">
+                <button type="submit" class="btn btn-primary">Add menu</button>
+            </fieldset>
+        </form>
+        -------------------------------------------------------------------------------------------------
+        <form class="form-horizontal" method="POST" action="{{ url_for('main.addfood') }}">
+            <fieldset>
+                <input type="text" class="form-control" name="food_name" id="input_food_name" placeholder="food_name">
+                <button type="submit" class="btn btn-primary">Add food</button>
+            </fieldset>
+        </form>
+        -------------------------------------------------------------------------------------------------
+        <form class="form-horizontal" method="POST" action="{{ url_for('main.addfoodtomenu') }}">
+            <fieldset>
+                <input type="number" step="any" class="form-control" name="price" id="input_price" placeholder="price">
+                <select name="menu_id" font=black>
+                    {% for menu_item in menulist %}
+                    <option value={{ menu_item.menu_id }} font=black>{{ menu_item.menu_name }}</option>
+                    {% endfor %}
+                </select>
+                <select name="food_id" font=black>
+                    {% for food_item in food %}
+                    <option value={{ food_item.food_id }} font=black>{{ food_item.food_name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Add food to menu</button>
+            </fieldset>
+        </form>
+        -------------------------------------------------------------------------------------------------
+        <form class="form-horizontal" method="POST" action="{{ url_for('main.deletefoodfrommenu') }}">
+            <fieldset>
+                <select name="dish_id" font=black>
+                    {% for menu_item in menu %}
+                    <option value={{ menu_item.Dish.dish_id }} font=black>{{ menu_item.Menu.menu_name }} has {{ menu_item.Food.food_name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">delete food from menu</button>
+            </fieldset>
+        </form>
+    </div>
 {% endblock %}

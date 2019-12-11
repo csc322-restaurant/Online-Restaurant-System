@@ -50,7 +50,7 @@
             {% if current_user.is_authenticated and ((current_user.role == 'Salesmanager') or (current_user.role == 'Manager')) %}
             <li><a href="{{ url_for('main.manageingredients') }}">Manage ingredients and suppliers</a></li>
             {% endif %}
-            {% if current_user.is_authenticated and (current_user.role == 'Chef') %}
+            {% if current_user.is_authenticated and (current_user.role == 'Chef' or (current_user.role == 'Manager')) %}
             <li><a href="{{ url_for('main.managemenu') }}">Manage Menu</a></li>
             {% endif %}
             {% if current_user.is_authenticated %}

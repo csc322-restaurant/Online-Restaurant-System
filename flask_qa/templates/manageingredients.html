@@ -20,6 +20,7 @@
                         </tr>
                     {% endfor %}
                 </table>
+                -------------------------------------------------------------------------------------------------
                 <table style="width:30%; margin:30px auto; border-collapse:collapse;">
                     <tr>
                         <th>Ingredient_id</th>
@@ -32,6 +33,7 @@
                         </tr>
                     {% endfor %}
                 </table>
+                -------------------------------------------------------------------------------------------------
                 <table style="width:80%; margin:30px auto; border-collapse:collapse;">
                     <tr>
                         <th>ingredientsupplier_id</th>
@@ -52,18 +54,21 @@
                         </tr>
                     {% endfor %}
                 </table>
+                -------------------------------------------------------------------------------------------------
                 <form class="form-horizontal" method="POST" action="{{ url_for('main.addingredient') }}">
                     <fieldset>
                         <input type="text" class="form-control" name="ingredient_name" id="input_ingredient_name" placeholder="ingredient_name">
                         <button type="submit" class="btn btn-primary">Add ingredients</button>
                     </fieldset>
                 </form>
+                -------------------------------------------------------------------------------------------------
                 <form class="form-horizontal" method="POST" action="{{ url_for('main.addsupplier') }}">
                     <fieldset>
                         <input type="text" class="form-control" name="supplier_name" id="input_supplier_name" placeholder="supplier_name">
                         <button type="submit" class="btn btn-primary">Add ingredient to supply order</button>
                     </fieldset>
                 </form>
+                -------------------------------------------------------------------------------------------------
                 <form class="form-horizontal" method="POST" action="{{ url_for('main.addingredientsupplier') }}">
                     <fieldset>
                         <input type="text" class="form-control" name="supplier_name" id="input_supplier_name" placeholder="supplier_name">
@@ -81,7 +86,6 @@
                         <button type="submit" class="btn btn-primary">Add ingredient to supply order</button>
                     </fieldset>
                 </form>
-                
           </div>
         </div><!-- /.col-lg-12 -->
       </div>
