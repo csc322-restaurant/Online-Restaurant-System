@@ -12,6 +12,8 @@
     <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
     
     <link href="{{ url_for('static', filename='theme.css') }}" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='rate.css') }}" rel="stylesheet">
   </head>
 
   <body>
@@ -55,6 +57,9 @@
             {% endif %}
             {% if current_user.is_authenticated and (current_user.role == 'Chef' or (current_user.role == 'Manager') or (current_user.role == 'salesManager')) %}
             <li><a href="{{ url_for('main.managefoodingredients') }}">Manage food ingredients</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and (current_user.role != 'Visitor') %}
+            <li><a href="{{ url_for('main.rating') }}">Rate</a></li>
             {% endif %}
             {% if current_user.is_authenticated %}
             <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>

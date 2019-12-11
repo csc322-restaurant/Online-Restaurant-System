@@ -109,6 +109,20 @@ class User(UserMixin, db.Model):
         backref='order_to',
         lazy=True
     )
+    #gets the orders of the user
+    delivery_orders = db.relationship(
+        'Order',
+        foreign_keys='Order.deliverer_id',
+        backref='order_from_user',
+        lazy=True
+    )
+    #gets the orders of the user
+    cook_orders = db.relationship(
+        'Order',
+        foreign_keys='Order.cook_id',
+        backref='order_from_cook',
+        lazy=True
+    )
 
     @property
     def unhashed_password(self):
@@ -271,8 +285,8 @@ class Order(db.Model):
     order_id = db.Column(db.Integer, primary_key=True)
     order_success = db.Column(db.Boolean, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    start_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    end_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    deliverer_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    cook_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     restaurant_id= db.Column(db.Integer, db.ForeignKey('restaurant.restaurant_id'))
     order_date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     #each dish can have orders

@@ -432,3 +432,51 @@ def managefoodingredients():
     }
 
     return render_template('managefoodingredients.html', **context)
+
+@main.route('/rateuser', methods=['GET', 'POST'])
+@login_required
+def rateuser():
+    if (current_user.role == 'Visitor'):
+        return redirect(url_for('main.index'))
+
+    rating = Rating(
+        rating = request.form['rating'],
+        rated_id = request.form['rated_id'],
+        rater_id = current_user.id
+    )
+    db.session.add(rating)
+    db.session.commit()
+
+    return redirect(url_for('main.rating'))
+
+@main.route('/rating')
+@login_required
+def rating():
+    if (current_user.role == 'Visitor'):
+        return redirect(url_for('main.index'))
+    user = db.session.query(User).all()
+    rating = db.session.query(Rating, User)\
+        .filter(Rating.rated_id == current_user.id)\
+        .filter(Rating.rater_id == User.id)\
+        .all()
+    if (current_user.role == 'Registered'):
+        user = db.session.query(User, Order)\
+        .filter(User.id == Order.user_id)\
+        .order_by(Order.order_date)\
+        .all()
+    if (current_user.role == 'Deliverer'):
+        user = db.session.query(User, Order)\
+        .filter(User.id == Order.deliverer_id)\
+        .order_by(Order.order_date)\
+        .all()
+    if (current_user.role == 'Chef'):
+        user = db.session.query(User)\
+        .filter(User.restaurant_id == current_user.restaurant_id)\
+        .filter(User.role == 'Salesmanager')\
+        .all()
+    context = {
+        'user' : user,
+        'rating' : rating
+    }
+
+    return render_template('rating.html', **context)
